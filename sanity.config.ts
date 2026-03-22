@@ -15,11 +15,13 @@ export default defineConfig({
     structureTool(),
     visionTool(),
     documentInternationalization({
+      // Tukaj sva dodala 'page', da bodo prevodi delovali tudi za celotno stran
       supportedLanguages: [
         {id: 'sl', title: 'Slovenščina'},
         {id: 'en', title: 'English'}
       ],
-      schemaTypes: ['post']
+      schemaTypes: ['post', 'page', 'product'], // <--- DODANO 'page' SEM
+      languageField: 'language',
     })
   ],
 
