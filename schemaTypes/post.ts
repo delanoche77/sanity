@@ -6,6 +6,14 @@ export default defineType({
   type: 'document',
 
   fields: [
+    // To polje omogoča Sanity vtičniku, da shrani informacijo o jeziku (en/sl)
+    defineField({
+      name: 'language',
+      type: 'string',
+      readOnly: true,
+      hidden: true,
+    }),
+
     defineField({
       name: 'title',
       title: 'Title',
@@ -66,7 +74,12 @@ export default defineType({
   preview: {
     select: {
       title: 'title',
+      author: 'author.name',
       media: 'mainImage'
+    },
+    prepare(selection) {
+      const {author} = selection
+      return {...selection, subtitle: author && `by ${author}`}
     }
   }
 })
