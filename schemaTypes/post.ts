@@ -16,7 +16,8 @@ export default defineType({
 
     defineField({
       name: 'title',
-      title: 'SI/EN - Naslov / Title', // Predpona za naslov
+      title: 'SI/EN - Naslov na strani / Title on Page',
+      description: 'Naslov, ki bo viden obiskovalcem na spletni strani.',
       type: 'string'
     }),
 
@@ -30,6 +31,23 @@ export default defineType({
       }
     }),
 
+    // --- DODANA SEO POLJA ---
+    defineField({
+      name: 'seoTitle',
+      title: 'Google Naslov (SEO Title)',
+      description: 'Naslov, ki se prikaže v iskalniku. Če pustite prazno, se uporabi zgornji naslov.',
+      type: 'string',
+    }),
+
+    defineField({
+      name: 'seoDescription',
+      title: 'Google Opis (SEO Description)',
+      description: 'Kratek povzetek za Google rezultate (okoli 150 znakov).',
+      type: 'text',
+      rows: 2,
+    }),
+    // -------------------------
+
     defineField({
       name: 'author',
       title: 'Avtor (Author)',
@@ -41,7 +59,15 @@ export default defineType({
       name: 'mainImage',
       title: 'Glavna slika (Main image)',
       type: 'image',
-      options: {hotspot: true}
+      options: {hotspot: true},
+      fields: [
+        defineField({
+          name: 'alt',
+          type: 'string',
+          title: 'Opis slike za Google (Alt Text)',
+          description: 'Pomembno za SEO. Opišite, kaj je na sliki.',
+        })
+      ]
     }),
 
     defineField({
@@ -59,18 +85,29 @@ export default defineType({
 
     defineField({
       name: 'excerpt',
-      title: 'SI/EN - Povzetek / Excerpt', // Predpona za povzetek
+      title: 'SI/EN - Povzetek / Excerpt',
+      description: 'Kratek uvodni tekst, ki se prikaže na seznamu vseh blogov.',
       type: 'text',
       rows: 3
     }),
 
     defineField({
       name: 'body',
-      title: 'SI/EN - Vsebina / Body', // Predpona za vsebino
+      title: 'SI/EN - Vsebina / Body',
       type: 'array',
       of: [
         {type: 'block'},
-        {type: 'image', options: {hotspot: true}}
+        {
+          type: 'image',
+          options: {hotspot: true},
+          fields: [
+            defineField({
+              name: 'alt',
+              type: 'string',
+              title: 'Opis slike za Google (Alt Text)',
+            })
+          ]
+        }
       ]
     })
   ],
