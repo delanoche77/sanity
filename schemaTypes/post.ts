@@ -6,23 +6,23 @@ export default defineType({
   type: 'document',
 
   fields: [
-    // To polje omogoča Sanity vtičniku, da shrani informacijo o jeziku (en/sl)
     defineField({
       name: 'language',
+      title: 'Jezik / Language',
       type: 'string',
       readOnly: true,
-      hidden: true,
+      hidden: false,
     }),
 
     defineField({
       name: 'title',
-      title: 'Title',
+      title: 'SI/EN - Naslov / Title', // Predpona za naslov
       type: 'string'
     }),
 
     defineField({
       name: 'slug',
-      title: 'Slug',
+      title: 'URL pot (Slug)',
       type: 'slug',
       options: {
         source: 'title',
@@ -32,54 +32,65 @@ export default defineType({
 
     defineField({
       name: 'author',
-      title: 'Author',
+      title: 'Avtor (Author)',
       type: 'reference',
       to: [{type: 'author'}]
     }),
 
     defineField({
       name: 'mainImage',
-      title: 'Main image',
+      title: 'Glavna slika (Main image)',
       type: 'image',
       options: {hotspot: true}
     }),
 
     defineField({
       name: 'categories',
-      title: 'Categories',
+      title: 'Kategorije (Categories)',
       type: 'array',
       of: [{type: 'reference', to: {type: 'category'}}]
     }),
 
     defineField({
       name: 'publishedAt',
-      title: 'Published at',
+      title: 'Datum objave (Published at)',
       type: 'datetime'
     }),
 
     defineField({
       name: 'excerpt',
-      title: 'Excerpt',
-      type: 'text'
+      title: 'SI/EN - Povzetek / Excerpt', // Predpona za povzetek
+      type: 'text',
+      rows: 3
     }),
 
     defineField({
       name: 'body',
-      title: 'Body',
+      title: 'SI/EN - Vsebina / Body', // Predpona za vsebino
       type: 'array',
-      of: [{type: 'block'}]
+      of: [
+        {type: 'block'},
+        {type: 'image', options: {hotspot: true}}
+      ]
     })
   ],
 
   preview: {
     select: {
       title: 'title',
+      lang: 'language',
+      media: 'mainImage',
       author: 'author.name',
-      media: 'mainImage'
     },
     prepare(selection) {
-      const {author} = selection
-      return {...selection, subtitle: author && `by ${author}`}
+      const {title, lang, media, author} = selection
+      const langLabel = lang ? lang.toUpperCase() : '??'
+      
+      return {
+        title: `[${langLabel}] ${title || 'Brez naslova'}`,
+        subtitle: `${lang === 'sl' ? 'Slovenščina' : 'English'} ${author ? '| by ' + author : ''}`,
+        media: media,
+      }
     }
   }
 })
